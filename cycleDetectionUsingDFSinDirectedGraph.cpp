@@ -11,10 +11,10 @@ bool dfsCheck(int node, vector<int> adj[] , int vis[] , int pathVis[])
     {
         if(!vis[neighbour])
         {
-            if(dfsCheck(neighbour,adj,vis,pathVis))
+            if(dfsCheck(neighbour,adj,vis,pathVis)) // if any of the neighbours detect a cycle , return true
             return true;
         }
-        else if(pathVis[neighbour])
+        else if(pathVis[neighbour]) // if a neighbour node has already been visited and exists on the same path, then there is definitely a cycle
         return true;
     }
     // If none of the neighbours return a true , return false

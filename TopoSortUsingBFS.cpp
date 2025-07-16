@@ -4,6 +4,10 @@
 using namespace std;
 
 // Also known as Kahn's Algorithm
+
+// This concept can also be used for cycle detection in directed graphs, as we know that topo sort is only possible for DAGs, if we try to implement
+// topo sort for a directed cyclic graph, then the number of nodes in the final sequence will always be less than the total number of nodes , and this
+// fact can be used for detecting a cycle in a directed graph.
 vector<int> topoSort(int v,vector<int> adj[])
 {
     int indegree[v] = {0};

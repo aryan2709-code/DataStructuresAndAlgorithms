@@ -54,3 +54,5 @@ int main()
       for(auto it:distances) cout<<it<<" ";
       return 0;
 }
+
+// The worst case time complexity of dijkstra algorithms is O(ElogV) where E is the total number of edges and v is the number of vertices.

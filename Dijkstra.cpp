@@ -1,3 +1,5 @@
+// Dijkstra Algorithm is not applicable for graph having negative edge weight(s);
+
 #include<iostream>
 #include<queue>
 #include<vector>

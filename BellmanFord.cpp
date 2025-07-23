@@ -1,6 +1,7 @@
 
 /*
 Bellman-Ford algorithm is another technique for finding the shortest path in a directed graph.
+It is a single source shortest path algorithm
 If the graph is undirected, we treat each edge as two directed edges:
 For example, an edge like 1 --- 5 will be represented as both 1 -> 5 and 5 -> 1.
 

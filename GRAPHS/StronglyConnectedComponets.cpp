@@ -1,3 +1,8 @@
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+
 /*
 Kosaraju's Algorithm – Strongly Connected Components (SCC)
 
@@ -42,74 +47,72 @@ Space Complexity:
 Kosaraju’s algorithm is efficient, clean, and easy to implement when finding SCCs in directed graphs.
 */
 
-
-#include<iostream>
-#include<vector>
-#include<stack>
-using namespace std;
-void dfs(int node,vector<int>& vis,vector<int> adj[],stack<int>& st)
+void dfs(int node, vector<int> adj[], vector<int>& vis, stack<int>& st)
 {
     vis[node] = 1;
-    for(int neighbour:adj[node])
+
+    for(auto it:adj[node])
     {
-         if(!vis[neighbour])
-         dfs(neighbour,vis,adj,st);
+        if(vis[it] == 0)
+        dfs(it,adj,vis,st);
     }
+
+    // After DFS call for the current node is complete, push it in the stack
     st.push(node);
 }
-void dfs3(int node,vector<int>& vis,vector<int> adj[])
+
+void dfsReverse(int node, vector<int> adj[], vector<int>& vis)
 {
     vis[node] = 1;
-    for(int neighbour:adj[node])
+    for(auto it:adj[node])
     {
-        if(!vis[neighbour])
-        dfs3(neighbour,vis,adj);
+        if(vis[it] == 0)
+        {
+            dfsReverse(it,adj,vis);
+        }
     }
 }
-int kosaraju(int v, vector<int> adj[]) // Only exists for directed graphs
+
+int StronglyConnectedComponents(int v, vector<int> adj[]) // Only exists for directed graphs
 {
-    vector<int> vis(v,0);
-    stack<int> st;
+   stack<int> st;
+   vector<int> vis(v,0);
 
-    // Sort the edges based on their start and finish time, so that we know that which nodes lie in the strongly connected component 1.
-    // The sorted order is stored in the stack
-    for(int i=0; i<v; i++)
+   for(int i=0; i<v; i++)
+   {
+    if(vis[i] == 0)
+    dfs(i,adj,vis,st);
+   }
+
+   // Reverse the Graph
+   vector<int> adjR[v];
+   for(int i=0; i<v; i++)
+   {
+    // (i -- it) edge exists ---> (it --- i)
+    vis[i] = 0;
+    for(auto it:adj[i])
     {
-        if(!vis[i])
-        dfs(i,vis,adj,st);
+        adjR[it].push_back(i);
     }
+   }
 
-    // reverse the graph
-    vector<int> adjT[v];
-    for(int i=0; i<v; i++)
+   int scc = 0;
+   while(!st.empty())
+   {
+    int node = st.top();
+    st.pop();
+    if(!vis[node])
     {
-        vis[i] = 0;
-        for(auto it:adj[i])
-        {
-            // Current edge : i -> it,
-            // Reversed edge : it -> i
-            adjT[it].push_back(i);
-        }
+        scc++;
+        dfsReverse(node,adjR,vis);
     }
-
-    // Now , perform another dfs on the reversed graph, the number of times a new dfs call is made indicates the number of strongly connected 
-    // components, because after reversal, we can't go from one scc to another, but can still travel within one scc
-
-    int scc = 0; // Number of strongly connected components 
-    for(int i=0; i<v; i++)
-    {
-        if(!vis[i])
-        {
-            scc++;
-            dfs3(i,vis,adjT);
-        }
-    }
-    return scc;
+   }
+  return scc;
 }
 
 int main()
 {
-    int V = 8;
+     int V = 8;
     vector<int> adj[V];
 
     // Directed Graph with 3 SCCs
@@ -127,6 +130,6 @@ int main()
     adj[6] = {7};
     adj[7] = {5};
 
-    cout << "The number of strongly connected components is : "<<kosaraju(V,adj);
+    cout << "The number of strongly connected components is : "<< StronglyConnectedComponents(V,adj);
     return 0;
 }

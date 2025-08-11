@@ -27,9 +27,9 @@ void changeTree(Node* root)
     else
     {
         if(root->left)
-        root->left->val = child;
+        root->left->val = root->val;
         if(root->right)
-        root->right->val = child;
+        root->right->val = root->val;
     }
 
     changeTree(root->left);

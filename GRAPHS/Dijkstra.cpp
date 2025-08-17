@@ -5,31 +5,44 @@
 #include<vector>
 using namespace std;
 
-vector<int> dijkstra(int v, vector<vector<int>> adj[] , int src)
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+
+// Dijkstra Algorithm is not applicable for graphs having negative edge weight cycle
+
+vector<int> dijkstra(int v , vector<vector<int>> adj[], int src)
 {
-    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq; // {Dist,Node}
-    vector<int> dist(v,1e9);
-    dist[src] = 0;
-    pq.push({0,src});
-    while(!pq.empty())
+priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq; // {dist,src}
+vector<int> dist(v,1e9);
+dist[src] = 0;
+pq.push({0,src});
+while(!pq.empty())
+{
+    auto it = pq.top();
+    pq.pop();
+
+    int dis = it.first;
+    int node = it.second;
+
+    if(dis > dist[node])
+    continue; // skip outdated entries
+
+    for(auto it : adj[node])
     {
-        int distance = pq.top().first;
-        int node = pq.top().second;
-        pq.pop();
+        int adjNode = it[0];
+        int edgW = it[1];
 
-        for(auto it:adj[node])
+        if(dis + edgW < dist[adjNode]) // got a better distance
         {
-            int edgeWeight = it[1];
-            int adjNode = it[0];
-
-            if(distance + edgeWeight < dist[adjNode] )
-            {
-                dist[adjNode] = distance + edgeWeight;
-                pq.push({dist[adjNode],adjNode});
-            }
+            dist[adjNode] = dis + edgW;
+            pq.push({dist[adjNode],adjNode});
         }
+
     }
-    return dist;
+}
+return dist;
 }
 
 void printArray(vector<int>& nums)

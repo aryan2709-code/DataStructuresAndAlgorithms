@@ -30,17 +30,21 @@ void iterativePostorder(Node* root)
     {
         if(curr != NULL)
         {
-            st.push(curr);
-            curr = curr->left;
+            st.push(curr); //push root and go left
+            curr = curr->left; // keep diving into the left
         }
         else
         {
-           temp = st.top()->right;
-           if(temp == NULL)
+           temp = st.top()->right; // check right child of the top
+           if(temp == NULL) // means left and right done , process the top
            {
-             temp = st.top();
+             temp = st.top(); 
              st.pop();
-             cout << temp->val << " ";
+             cout << temp->val << " "; //processing the top
+
+               // backtrack upwards : 
+               // if coming from right child, parent is also ready
+               // parent's left is done , right is just now done , so now its parent's turn
              while(!st.empty() && temp == st.top()->right)
              {
                 temp = st.top();
@@ -50,7 +54,7 @@ void iterativePostorder(Node* root)
            }
            else
            {
-            curr = temp;
+            curr = temp; // if right child exists -> go process it
            }
         }
     }

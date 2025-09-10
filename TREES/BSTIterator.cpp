@@ -21,7 +21,7 @@ BSTIterator(Node* root)
     pushAll(root);
 }
 
-// Has Next Function - whether the next element in the postorder sequence exists or not 
+// Has Next Function - whether the next element in the inorder sequence exists or not 
 bool hasNext()
 {
     return !myStack.empty();
@@ -32,7 +32,7 @@ int next()
 {
     Node* tempNode = myStack.top();
     myStack.pop();
-    pushAll(tempNode);
+    pushAll(tempNode->right);
     return tempNode->val;
 }
 };

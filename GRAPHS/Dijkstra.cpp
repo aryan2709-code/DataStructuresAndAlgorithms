@@ -5,13 +5,6 @@
 #include<vector>
 using namespace std;
 
-#include<iostream>
-#include<queue>
-#include<vector>
-using namespace std;
-
-// Dijkstra Algorithm is not applicable for graphs having negative edge weight cycle
-
 vector<int> dijkstra(int v , vector<vector<int>> adj[], int src)
 {
 priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq; // {dist,src}

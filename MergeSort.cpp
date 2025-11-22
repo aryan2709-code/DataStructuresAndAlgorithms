@@ -4,26 +4,24 @@ using namespace std;
 
 void merge(vector<int>& arr, int low, int mid, int high)
 {
-    // Left part [low ----- mid] Right Part [mid+1 ----- high]
+    vector<int> temp;
+    // Take two pointers
     int left = low;
     int right = mid+1;
-
-    vector<int> temp;
-
     while(left <= mid && right <= high)
     {
-          if(arr[left] <= arr[right])
-          {
+        if(arr[left] <= arr[right])
+        {
             temp.push_back(arr[left]);
             left++;
-          }
-          else // arr[left] > arr[right]
-          {
+        }
+        else
+        {
             temp.push_back(arr[right]);
             right++;
-          }
+        }
     }
-    // Either the left portion or the right portion will have remaining elements
+
     while(left <= mid)
     {
         temp.push_back(arr[left]);
@@ -35,22 +33,24 @@ void merge(vector<int>& arr, int low, int mid, int high)
         right++;
     }
 
-    // Now copy the elements from left to right
-    copy(temp.begin(),temp.end(),arr.begin()+low);
-    // temp.begin() -> Iterator pointing to the first element in the range you want to copy from
-    // temp.end() -> Iterator pointing one past the last element in the range you want to copy from
-    // arr.begin() + low -> The Destination where you want the elements to get copied 
+    // Copy the elements from this temp array to the actual array
+    for(int i=low; i<=high; i++)
+    {
+        arr[i] = temp[i-low];
+    }
 }
 
-void mergeSort(vector<int>& arr, int low, int high)
+void mergeSort(vector<int>& arr,int low, int high)
 {
+
     if(low >= high)
     return;
 
-    int mid = low + (high - low) / 2;
-    mergeSort(arr,low,mid);
-    mergeSort(arr,mid+1,high);
-    merge(arr,low,mid,high);
+  int mid = low + (high - low) / 2;
+  // Call the same algorithm on both the halves
+  mergeSort(arr,low,mid);
+  mergeSort(arr,mid+1,high);
+  merge(arr,low,mid,high);
 }
 
 int main()
